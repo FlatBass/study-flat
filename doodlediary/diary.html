@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 키워드 일기장</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f4f1ea; /* 따뜻한 종이 느낌의 배경색 */
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 550px;
+            border: 1px solid #e6dfd3;
+        }
+        h2 {
+            color: #4a3e3d;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #8c7b75;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            box-sizing: border-box;
+            border: 2px solid #e6dfd3;
+            border-radius: 10px;
+            resize: none;
+            font-size: 15px;
+            margin-bottom: 15px;
+            outline: none;
+            background-color: #faf9f6;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        textarea:focus {
+            border-color: #bcaaa4;
+            background-color: #ffffff;
+        }
+        button {
+            width: 100%;
+            background-color: #8d6e63; /* 편안한 브라운 톤 */
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #6d4c41;
+        }
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fffdf9;
+            border: 1px dashed #d7ccc8;
+            border-radius: 10px;
+            display: none; /* 기본 숨김 */
+            position: relative;
+        }
+        .result-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 15px;
+            color: #5d4037;
+            border-bottom: 1px solid #efebe9;
+            padding-bottom: 6px;
+        }
+        #diaryOutput {
+            font-size: 16px;
+            color: #3e2723;
+            line-height: 1.8;
+            word-break: break-all;
+            white-space: pre-wrap; /* 줄바꿈 유지 */
+            letter-spacing: -0.3px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            color: #8d6e63;
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>✍️ 나의 키워드 일기장</h2>
+    <div class="subtitle">
+        오늘을 기억할 수 있는 단어 5개를 적어보세요.<br>
+        제미나이가 따뜻한 문장으로 일기를 채워줍니다.
+    </div>
+
+    <!-- 사용자 단어 입력 창 -->
+    <textarea id="keywordInput" placeholder="예시) 커피, 비, 음악, 지각, 우산"></textarea>
+    <button onclick="writeDiary()">✨ AI 일기 작성하기</button>
+
+    <!-- 로딩 메시지 -->
+    <div id="loadingStatus" class="loading">제미나이가 오늘의 하루를 되돌아보는 중... ✒️</div>
+
+    <!-- 완성된 일기 출력 영역 -->
+    <div id="resultArea" class="result-box">
+        <h3>📝 완성된 오늘의 일기</h3>
+        <div id="diaryOutput"></div>
+    </div>
+</div>
+
+<script>
+    async function writeDiary() {
+        const keywordInput = document.getElementById('keywordInput').value.trim();
+        const resultArea = document.getElementById('resultArea');
+        const diaryOutput = document.getElementById('diaryOutput');
+        const loadingStatus = document.getElementById('loadingStatus');
+
+        if (!keywordInput) {
+            alert('단어들을 입력해 주세요!');
+            return;
+        }
+
+        // 상태 초기화 및 로딩 시작
+        loadingStatus.style.display = 'block';
+        resultArea.style.display = 'none';
+
+        try {
+            // 컨트롤러 호출 (/diary?text=사용자가 입력한 키워드들)
+            const response = await fetch(`/diary?text=${encodeURIComponent(keywordInput)}`);
+
+            if (!response.ok) {
+                throw new Error('서버와 통신 중 문제가 발생했습니다.');
+            }
+
+            const diaryResult = await response.text();
+
+            // 결과 바인딩 및 화면 노출
+            diaryOutput.innerText = diaryResult;
+            resultArea.style.display = 'block';
+        } catch (error) {
+            alert('오류 발생: ' + error.message);
+        } finally {
+            // 로딩 종료
+            loadingStatus.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
