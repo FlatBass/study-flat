@@ -38,7 +38,7 @@
 
 ---
 
-3. 기술 스택
+# 3. 기술 스택
 
 | 구분 | 기술 |
 |---|---|
@@ -52,7 +52,7 @@
 
 ---
 
-4. 주요 기능
+# 4. 주요 기능
 
 | 기능 | 설명 |
 |---|---|
@@ -64,7 +64,7 @@
 
 ---
 
-5. API / 화면 요청 목록
+# 5. API / 화면 요청 목록
 
 | Method | URL | Controller Method | View | 설명 |
 |---|---|---|---|---|
@@ -75,7 +75,7 @@
 
 ---
 
-6. 프로젝트 구조
+# 6. 프로젝트 구조
 
 ```text
 src/main/java/com/study/day02promptoutput/day2experience
@@ -98,7 +98,7 @@ src/main/resources/templates/experience
 
 ---
 
-7. DTO 구조
+# 7. DTO 구조
 
 경험분해 결과의 최상위 DTO.
 
@@ -164,7 +164,7 @@ public record ResumeResponse(
 
 ---
 
-8. Service 핵심 코드
+# 8. Service 핵심 코드
 
 ```java
 public ExperienceBreakdownResponse breakdownExperience(String experience) {
@@ -205,7 +205,7 @@ public ExperienceBreakdownResponse breakdownExperience(String experience) {
 
 ---
 
-9. Thymeleaf 출력 핵심 코드
+# 9. Thymeleaf 출력 핵심 코드
 
 ```html
 <tbody>
@@ -225,18 +225,18 @@ public ExperienceBreakdownResponse breakdownExperience(String experience) {
 
 ---
 
-10. 실행 방법
+# 10. 실행 방법
 
-1) 브라우저 접속
+### 1) 브라우저 접속
 
 서버 실행 후 브라우저에서 아래 주소로 접속.
 http://localhost:8080/experience
 
-2) 경험 입력
+### 2) 경험 입력
 
 textarea에 경험을 입력한 뒤 경험분해하기 버튼을 클릭한다.
 
-3) 결과 확인
+### 3) 결과 확인
 
 AI가 분석한 결과가 다음 형태로 출력된다.
 
@@ -249,7 +249,7 @@ AI가 분석한 결과가 다음 형태로 출력된다.
 
 ---
 
-11. 화면 캡처
+# 11. 화면 캡처
 
 아래 경로에 화면 캡처 이미지를 추가하면 README에서 바로 확인할 수 있습니다.
 
@@ -258,8 +258,8 @@ AI가 분석한 결과가 다음 형태로 출력된다.
 
 ---
 
-12. 배운 것
-1) Java record DTO 사용
+# 12. 배운 것
+### 1) Java record DTO 사용
 
 기존 class 방식이 아니라 record를 사용해 간단한 응답 객체를 만들었다.
 
@@ -273,7 +273,7 @@ public record ActionItem(
 
 record는 생성자, getter 역할의 메서드, equals, hashCode, toString을 자동으로 만들어주기 때문에 단순 DTO에 적합.
 
-2) record 안에 다른 record와 List 넣기
+### 2) record 안에 다른 record와 List 넣기
 
 처음에는 한 줄짜리 DTO만 사용했지만, PDF의 경험분해 표처럼 계층형 구조를 표현하려면 DTO 안에 List가 필요하다는 것을 확인.
 
@@ -292,7 +292,7 @@ public record ExperienceBreakdownResponse(
 문제별 행동 여러 개
 행동별 역량 1개
 
-3) Spring AI의 .entity() 사용
+### 3) Spring AI의 .entity() 사용
 
 AI 응답을 단순 문자열이 아니라 Java 객체로 변환.
 
@@ -302,7 +302,7 @@ AI 응답을 단순 문자열이 아니라 Java 객체로 변환.
 
 이를 통해 JSON 응답을 직접 파싱하지 않고도 DTO로 받을 수 있었다.
 
-4) 프롬프트 템플릿 사용 시 주의점
+### 4) 프롬프트 템플릿 사용 시 주의점
 
 Spring AI의 .param()을 사용할 때 프롬프트 안의 {experience}는 템플릿 변수로 처리된다.
 
@@ -313,7 +313,7 @@ The template string is not valid.
 ```
 이번에는 JSON 예시 대신 record 필드 구조를 설명하는 방식으로 해결함.
 
-5) Controller, Service, DTO 역할 분리
+### 5) Controller, Service, DTO 역할 분리
 
 | 계층 | 역할 |
 |---|---|
@@ -324,8 +324,8 @@ The template string is not valid.
 
 ---
 
-14. 트러블슈팅
-1) Thymeleaf 템플릿을 찾지 못하는 오류
+# 14. 트러블슈팅
+### 1) Thymeleaf 템플릿을 찾지 못하는 오류
 
 ```code
 Error resolving template [experience-form]
@@ -347,7 +347,7 @@ return \"experience/experience-form\";
 src/main/resources/templates/experience/experience-form.html
 ```
 
-2) Spring AI 템플릿 문자열 오류
+### 2) Spring AI 템플릿 문자열 오류
 
 ```
 The template string is not valid.
@@ -365,7 +365,7 @@ Java record 필드 구조를 문장으로 설명
 {experience}처럼 실제 .param()으로 전달할 변수만 중괄호 사용
 
 
-3) 표 컬럼이 한 칸씩 밀리는 문제
+### 3) 표 컬럼이 한 칸씩 밀리는 문제
 
 원인:
 
@@ -379,7 +379,7 @@ Java record 필드 구조를 문장으로 설명
 
 ---
 
-15. 향후 개선 아이디어
+# 15. 향후 개선 아이디어
 
 | 개선 항목 | 설명 |
 |---|---|
@@ -392,7 +392,7 @@ Java record 필드 구조를 문장으로 설명
 
 ---
 
-16. 정리
+# 16. 정리
 
 이번 실습에서는 Spring AI를 이용해 사용자의 경험을 구조화된 객체로 받고, Thymeleaf 화면에서 표 형태로 출력했다.
 
