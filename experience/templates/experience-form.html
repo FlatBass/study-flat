@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>경험분해</title>
+</head>
+<body>
+<h1>경험분해 AI</h1>
+
+<form th:action="@{/experience}" method="post">
+    <textarea name="experience"
+              rows="10"
+              cols="80"
+              placeholder="내 경험을 자유롭게 입력하세요."></textarea>
+
+  <br><br>
+
+  <button type="submit">경험분해하기</button>
+</form>
+
+</body>
+</html>

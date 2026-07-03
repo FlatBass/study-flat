@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>경험분해 결과</title>
+</head>
+<body>
+
+<h1>경험분해 결과</h1>
+
+<h2>입력한 경험</h2>
+<p th:text="${experience}"></p>
+
+<h2>상황</h2>
+<p th:text="${breakdown.situation}"></p>
+
+<h2>경험분해 표</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>문제</th>
+        <th>행동</th>
+        <th>역량</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <th:block th:each="problem : ${breakdown.problems}">
+        <tr th:each="action, actionStat : ${problem.actions}">
+            <td th:if="${actionStat.index == 0}"
+                th:rowspan="${problem.actions.size()}"
+                th:text="${problem.problem}">
+            </td>
+
+            <td th:text="${action.actionTaken}"></td>
+            <td th:text="${action.competency}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+
+
+<a th:href="@{/experience}">다시 작성하기</a>
+
+</body>
+</html>
